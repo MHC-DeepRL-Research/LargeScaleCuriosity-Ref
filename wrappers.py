@@ -255,6 +255,21 @@ def make_mario_env(crop=True, frame_stack=True, clip_rewards=False):
     env = LimitedDiscreteActions(env, buttons)
     return env
 
+def make_atari_env(args,frame_stack=True):
+    import gym
+    from baselines.common.atari_wrappers import FrameStack, NoopResetEnv, FrameStack
+
+    env = gym.make(args['env'])
+    assert 'NoFrameskip' in env.spec.id
+    env = NoopResetEnv(env, noop_max=args['noop_max'])
+    env = MaxAndSkipEnv(env, skip=4)
+    env = ProcessFrame84(env, crop=False)
+    env = FrameStack(env, 4)
+    env = ExtraTimeLimit(env, args['max_episode_steps'])
+    if 'Montezuma' in args['env']:
+        env = MontezumaInfoWrapper(env)
+    env = AddRandomStateToInfo(env)
+    return env
 
 class OneChannel(gym.ObservationWrapper):
     def __init__(self, env, crop=True):
@@ -351,3 +366,4 @@ def make_robo_hockey(frame_stack=True):
         env = FrameStack(env, 4)
     env = AddRandomStateToInfo(env)
     return env
+
