@@ -1,5 +1,6 @@
-import tensorflow as tf
-
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from utils import small_convnet, fc, activ, flatten_two_dims, unflatten_first_dim, small_deconvnet
 
 

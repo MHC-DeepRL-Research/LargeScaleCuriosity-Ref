@@ -4,11 +4,15 @@ try:
 except:
     print("no OpenGL.GLU")
 import functools
+import datetime
 import os.path as osp
+
 from functools import partial
 
 import gym
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from baselines import logger
 from baselines.bench import Monitor
 from baselines.common.atari_wrappers import NoopResetEnv, FrameStack
@@ -154,7 +158,7 @@ def get_experiment_environment(**args):
     set_global_seeds(process_seed)
     setup_mpi_gpus()
 
-    logger_context = logger.scoped_configure(dir=None,
+    logger_context = logger.scoped_configure(dir=args["dir"],
                                              format_strs=['stdout', 'log',
                                                           'csv'] if MPI.COMM_WORLD.Get_rank() == 0 else ['log'])
     tf_context = setup_tensorflow_session()
@@ -198,6 +202,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--exp_name', type=str, default='')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
+    parser.add_argument('--dir', type=str, default=osp.join('./output/',
+            datetime.datetime.now().strftime("openai-%Y-%m-%d-%H-%M-%S-%f")))
     parser.add_argument('--dyn_from_pixels', type=int, default=0)
     parser.add_argument('--use_news', type=int, default=0)
     parser.add_argument('--ext_coeff', type=float, default=0.)
