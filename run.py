@@ -59,7 +59,8 @@ def get_experiment_environment(**args):
     process_seed = args["seed"] + 1000 * MPI.COMM_WORLD.Get_rank()
     process_seed = hash_seed(process_seed, max_bytes=4)
     set_global_seeds(process_seed)
-    setup_mpi_gpus()
+    # TODO: turn this back up when have GPU support!
+    # setup_mpi_gpus() 
 
     logger_context = logger.scoped_configure(dir=log_directory,
                                              format_strs=['stdout', 'log',

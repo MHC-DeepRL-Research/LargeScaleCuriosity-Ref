@@ -3,7 +3,7 @@ from functools import partial
 import gym
 #import tensorflow as tf
 import tensorflow.compat.v1 as tf
-
+tf.disable_v2_behavior() 
 from cnn_policy import CnnPolicy
 from cppo_agent import PpoOptimizer
 from dynamics import Dynamics, UNet

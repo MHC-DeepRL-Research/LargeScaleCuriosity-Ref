@@ -1,4 +1,12 @@
 import argparse
+
+import sys
+import string
+rospath = '/opt/ros/kinetic/lib/python2.7/dist-packages'
+if str(sys.path).find(rospath) != -1:
+    sys.path.remove(rospath) # in order to import cv2 under python3
+    print('ROS path temporarily removed.')
+
 from run import start_experiment
 
 
